@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Process Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <label>Backend URL:</label>
+    <input id="baseUrl" value="http://127.0.0.1:8000">
+    <label>Select Hostname:</label>
+    <select id="hostname"></select>
+    <button onclick="loadLatest()"> Fetch</button>
+    <label id="update" style="color: #4ae87c;">Loading...</label>
+</header>
+
+<div class="tabs">
+    <button id="tabSystem" class="tab active" onclick="showTab('system')">System Details</button>
+    <button id="tabProcesses" class="tab" onclick="showTab('processes')">Processes Details</button>
+</div>
+
+<div id="systemTab" class="tab-content">
+    <table id="systemTable"></table>
+</div>
+
+<div id="processesTab" class="tab-content" style="display:none">
+    <div style="margin-bottom:10px;">
+        <button onclick="setProcessView('table')">Table View</button>
+        <button onclick="setProcessView('tree')">Tree View</button>
+    </div>
+    <div id="processTableContainer"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

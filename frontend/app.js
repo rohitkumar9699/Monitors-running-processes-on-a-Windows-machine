@@ -1,135 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Process Monitor</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-/* Basic dark theme styling */
-body {
-    font-family: Arial, sans-serif;
-    background: #1a1f2e;
-    color: #f1f1f1;
-    margin: 0;
-}
-header {
-    background: #2b3145;
-    padding: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-}
-header label { font-weight: bold; }
-input, select, button {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 4px;
-}
-input, select { background: #121622; color: #fff; }
-button {
-    background: #ff6a5a;
-    color: white;
-    cursor: pointer;
-    font-size: large;
-    margin-right: 20px;
-    padding: 4px 8px;
-    border-radius: 5px;
-    border: 1px solid #1a1f2e;
-    transition: background 0.2s ease, transform 0.1s ease;
-}
-button:hover { background: #4ab6e8; }
-button:active { transform: scale(0.97); }
+let allProcesses = [];
+let processView = 'table';
 
-.tabs {
-    display: flex;
-    background: #ff6a5a;
-}
-.tab {
-    padding: 10px 16px;
-    cursor: pointer;
-    background: #ff6a5a;
-    color: #fff;
-}
-.tab.active { background: #e85a4a; }
-.tab-content { padding: 16px; }
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-}
-table th, table td {
-    border: 1px solid #444;
-    padding: 8px;
-    text-align: left;
-}
-table th { background: #2b3145; }
-tr:nth-child(even) { background: #23293d; }
-
-/* Tree view styling */
-.tree-node {
-    margin-left: 20px;
-    border-left: 1px dashed #555;
-    padding-left: 8px;
-}
-.tree-label {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.tree-label span {
-    font-size: 12px;
-    background: #2b3145;
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-.tree-toggle {
-    width: 14px;
-    text-align: center;
-    display: inline-block;
-    font-weight: bold;
-}
-</style>
-</head>
-<body>
-
-<header>
-    <!-- Controls for backend URL, hostname, refresh -->
-    <label>Backend URL:</label>
-    <input id="baseUrl" value="http://127.0.0.1:8000">
-    <label>Select Hostname:</label>
-    <select id="hostname"></select>
-    <button onclick="loadLatest()">Refresh</button>
-    <!-- <label><input type="checkbox" id="autoRefresh"> Auto refresh</label> -->
-    <label id="update" style="color: #4ae87c;">Loading...</label>
-</header>
-
-<!-- Tabs for switching between system and process details -->
-<div class="tabs">
-    <button id="tabSystem" class="tab active" onclick="showTab('system')">System Details</button>
-    <button id="tabProcesses" class="tab" onclick="showTab('processes')">Processes Details</button>
-</div>
-
-<!-- System info table -->
-<div id="systemTab" class="tab-content">
-    <table id="systemTable"></table>
-</div>
-
-<!-- Processes tab: switch between table/tree view -->
-<div id="processesTab" class="tab-content" style="display:none">
-    <div style="margin-bottom:10px;">
-        <button onclick="setProcessView('table')">Table View</button>
-        <button onclick="setProcessView('tree')">Tree View</button>
-    </div>
-    <div id="processTableContainer"></div>
-</div>
-
-<script>
-let allProcesses = []; // stores processes from latest snapshot
-let processView = 'table'; // default view mode
-
-// Switches visible tab
 function showTab(tab) {
     document.getElementById('systemTab').style.display = tab === 'system' ? 'block' : 'none';
     document.getElementById('processesTab').style.display = tab === 'processes' ? 'block' : 'none';
@@ -137,13 +8,11 @@ function showTab(tab) {
     document.getElementById('tabProcesses').classList.toggle('active', tab === 'processes');
 }
 
-// Sets process display mode
 function setProcessView(view) {
     processView = view;
     renderProcesses();
 }
 
-// Loads available hostnames from backend
 async function loadHosts() {
     const base = document.getElementById('baseUrl').value.trim();
     try {
@@ -160,7 +29,6 @@ async function loadHosts() {
             hostSelect.appendChild(opt);
         });
 
-        // Auto-select first hostname and load its data
         if (data.hosts.length > 0) {
             hostSelect.value = data.hosts[0].hostname;
             loadLatest();
@@ -170,7 +38,6 @@ async function loadHosts() {
     }
 }
 
-// Loads latest snapshot for selected hostname
 async function loadLatest() {
     const base = document.getElementById('baseUrl').value.trim();
     const hn = document.getElementById('hostname').value;
@@ -181,7 +48,6 @@ async function loadLatest() {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
 
-        // Render system details
         const sys = data.system_info || {};
         const sysHTML = `
             <tr><th>Name</th><td>${sys.name || ''}</td></tr>
@@ -198,10 +64,7 @@ async function loadLatest() {
         `;
         document.getElementById('systemTable').innerHTML = sysHTML;
 
-        // Store process list
         allProcesses = data.snapshot.processes || [];
-
-        // Show last update time
         const date = new Date(data.snapshot.created_at);
         document.getElementById("update").textContent = ` Updated at ${date.toLocaleString()}`;
         renderProcesses();
@@ -210,13 +73,11 @@ async function loadLatest() {
     }
 }
 
-// Renders processes in table or tree view
 function renderProcesses() {
     const container = document.getElementById('processTableContainer');
     container.innerHTML = '';
 
     if (processView === 'table') {
-        // Table layout
         let html = `<table><tr>
             <th>Sr. No</th>
             <th>Name</th>
@@ -238,7 +99,6 @@ function renderProcesses() {
         html += '</table>';
         container.innerHTML = html;
     } else {
-        // Tree layout
         const byPid = new Map();
         const roots = [];
         allProcesses.forEach(p => { p.children = []; byPid.set(p.pid, p); });
@@ -252,7 +112,6 @@ function renderProcesses() {
     }
 }
 
-// Creates a recursive tree node for process hierarchy
 function renderTreeNode(proc) {
     const wrapper = document.createElement('div');
     wrapper.className = 'tree-node';
@@ -268,7 +127,6 @@ function renderTreeNode(proc) {
         <span>Mem: ${proc.memory_mb ?? ''} MB</span>`;
     wrapper.appendChild(label);
 
-    // Handle collapsible children
     if (proc.children && proc.children.length > 0) {
         let expanded = true;
         const childrenContainer = document.createElement('div');
@@ -284,10 +142,4 @@ function renderTreeNode(proc) {
     return wrapper;
 }
 
-
-
-// Fetch host list on page load
 document.addEventListener('DOMContentLoaded', loadHosts);
-</script>
-</body>
-</html>

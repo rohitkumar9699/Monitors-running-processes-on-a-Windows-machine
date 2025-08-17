@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #1a1f2e;
+    color: #f1f1f1;
+    margin: 0;
+}
+header {
+    background: #2b3145;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+header label { font-weight: bold; }
+input, select, button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+}
+input, select { background: #121622; color: #fff; }
+button {
+    background: #ff6a5a;
+    color: white;
+    cursor: pointer;
+    font-size: large;
+    margin-right: 20px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #1a1f2e;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+button:hover { background: #4ab6e8; }
+button:active { transform: scale(0.97); }
+
+.tabs {
+    display: flex;
+    background: #ff6a5a;
+}
+.tab {
+    padding: 10px 16px;
+    cursor: pointer;
+    background: #ff6a5a;
+    color: #fff;
+}
+.tab.active { background: #e85a4a; }
+.tab-content { padding: 16px; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+table th, table td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: left;
+}
+table th { background: #2b3145; }
+tr:nth-child(even) { background: #23293d; }
+
+.tree-node {
+    margin-left: 20px;
+    border-left: 1px dashed #555;
+    padding-left: 8px;
+}
+.tree-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.tree-label span {
+    font-size: 12px;
+    background: #2b3145;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+.tree-toggle {
+    width: 14px;
+    text-align: center;
+    display: inline-block;
+    font-weight: bold;
+}

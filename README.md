@@ -19,7 +19,8 @@ This project is a complete **Process Monitoring System** that collects process i
   - Authentication using **API key**
   - Endpoints for process ingestion, fetching latest snapshot, and listing hosts/snapshots
 
-- **Frontend (HTML + JS)**
+- **Frontend (HTML + JS + CSS)**
+  - Run Index.html through Live server
   - Interactive **tree view** of processes
   - Expandable/collapsible subprocesses
   - Displays **hostname** and **latest timestamp**
@@ -39,8 +40,11 @@ process-monitor/
 │── agent/                 # Process monitoring agent
 │   ├── agent.py
 │   ├── config.ini
-│   └── build_instructions.md
-│── index.html  
+│ 
+│── Frontend 
+    ├── index.html
+│   ├── app.js
+│   └── style.css
 │── requirements.txt       # Python dependencies
 │── README.md              # Documentation (this file)
 ```
@@ -128,13 +132,6 @@ Visit: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 ---
 
-## 📊 Bonus Features (Optional)
-- Real-time updates with **WebSockets**
-- Historical data viewing
-- Filtering & search
-- Charts/graphs for CPU & memory usage
-
----
 
 ## 📖 Assumptions
 - Only a single API key is used (environment variable `MONITOR_API_KEY`).

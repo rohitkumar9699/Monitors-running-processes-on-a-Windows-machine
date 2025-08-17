@@ -41,14 +41,14 @@ def collect_system_info():
         "name": socket.gethostname(),
         "os": f"{uname.system} {uname.release} {uname.version}",
         "processor": uname.processor,
-        "cores": psutil.cpu_count(logical=False),       # Physical cores
-        "threads": psutil.cpu_count(logical=True),      # Logical threads (includes hyperthreading)
-        "ram_gb": round(svmem.total / (1024**3)),       # Total RAM in GB
-        "used_ram_gb": round(svmem.used / (1024**3)),   # Used RAM in GB
-        "available_ram_gb": round(svmem.available / (1024**3)),  # Free RAM in GB
-        "storage_free_gb": round(storage.free / (1024**3)),      # Free disk space in GB
-        "storage_total_gb": round(storage.total / (1024**3)),    # Total disk space in GB
-        "storage_used_gb": round(storage.used / (1024**3))       # Used disk space in GB
+        "cores": psutil.cpu_count(logical=False),      
+        "threads": psutil.cpu_count(logical=True),     
+        "ram_gb": round(svmem.total / (1024**3)),      
+        "used_ram_gb": round(svmem.used / (1024**3)),  
+        "available_ram_gb": round(svmem.available / (1024**3)), 
+        "storage_free_gb": round(storage.free / (1024**3)),    
+        "storage_total_gb": round(storage.total / (1024**3)),  
+        "storage_used_gb": round(storage.used / (1024**3))     
     }
 
 def collect_processes():
@@ -122,6 +122,7 @@ def main():
         """
         Sends a single snapshot of system + process data to the backend.
         """
+        print('Collecting System information.........')
         payload = {
             'hostname': args.hostname,
             'reported_at': datetime.now(timezone.utc).isoformat(),
