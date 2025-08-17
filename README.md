@@ -40,7 +40,7 @@ process-monitor/
 │   ├── agent.py
 │   ├── config.ini
 │   └── build_instructions.md
-│
+│── index.html  
 │── requirements.txt       # Python dependencies
 │── README.md              # Documentation (this file)
 ```
@@ -67,13 +67,13 @@ pip install -r requirements.txt
 ```
 
 ### 3. Configure API key
-Choose a key (e.g., `dev-12345`). Set it as an environment variable:
+Choose a key (e.g., `mysecretkey`). Set it as an environment variable:
 ```bash
 # Linux/Mac
-export MONITOR_API_KEY=dev-12345
+export MONITOR_API_KEY=mysecretkey
 
 # Windows (PowerShell)
-$env:MONITOR_API_KEY="dev-12345"
+$env:MONITOR_API_KEY="mysecretkey"
 ```
 
 ### 4. Run the backend server
@@ -93,7 +93,7 @@ Visit: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
    ```ini
    [agent]
    backend_url = http://127.0.0.1:8000/api/ingest/
-   api_key = dev-12345
+   api_key = mysecretkey
    interval_seconds = 30
    ```
 

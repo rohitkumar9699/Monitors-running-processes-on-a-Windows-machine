@@ -1,0 +1,5 @@
+Django
+djangorestframework
+psutil
+requests
+pytz
